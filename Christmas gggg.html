@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Merry Christmas</title>
+  
+  <style>
+    :root{
+      --bg1:#0f172a; /* deep navy */
+      --bg2:#132a4a; /* blue */
+      --accent:#ff7fbf; /* pink */
+      --soft:#f8f3ff;
+      --card:#0b1220bb;
+      --glow: 0 6px 30px rgba(255,127,191,0.15);
+      --sakura:#ffd7ea;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,127,191,0.06), transparent), linear-gradient(180deg,var(--bg1), var(--bg2));
+      color:var(--soft);
+      overflow:hidden;
+      display:flex;align-items:center;justify-content:center;padding:30px;
+    }
+
+    /* Scene container */
+    .scene{
+      width:100%;max-width:1100px;height:680px;border-radius:20px;position:relative;overflow:hidden;box-shadow:var(--glow);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);
+      display:grid;grid-template-columns:1fr 420px;gap:30px;padding:40px;
+    }
+
+    /* Left: landscape / anime illustration */
+    .land{
+      position:relative;border-radius:16px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;
+      background:linear-gradient(180deg, rgba(10,12,20,0.25), rgba(5,8,14,0.2));backdrop-filter:blur(2px);
+    }
+
+    /* Cute anime character card */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:18px;display:flex;gap:16px;align-items:center;
+    }
+    .avatar{
+      width:110px;height:110px;border-radius:18px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),#7ec8ff);display:grid;place-items:center;position:relative;box-shadow:0 8px 30px rgba(0,0,0,0.35);
+      transform:translateY(-10px);
+    }
+    /* simple anime face using SVG inside */
+    .avatar svg{width:88%;height:auto}
+
+    .card .meta{flex:1}
+    .card h3{font-family:'Mountains of Christmas',cursive;font-size:28px;margin-bottom:6px;color:var(--soft)}
+    .card p{opacity:0.85;font-size:13px}
+
+    .greeting{
+      margin-top:22px;padding:22px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 24px rgba(10,12,20,0.4);
+      font-size:20px;line-height:1.45;display:flex;flex-direction:column;gap:12px
+    }
+    .greeting .title{font-family:'Mountains of Christmas',cursive;font-size:40px;color:var(--accent);text-shadow:0 4px 18px rgba(255,127,191,0.12)}
+    .greeting .body{font-size:16px;color:rgba(248,243,255,0.95)}
+
+    /* Right: tree + message panel */
+    .panel{
+      border-radius:14px;padding:22px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;position:relative;box-shadow:var(--glow)
+    }
+
+    .tree-wrap{width:220px;height:340px;position:relative}
+    .tree{position:absolute;inset:0;display:grid;place-items:center}
+    /* stylized glowing tree using simple CSS shapes */
+    .tree .layer{width:0;height:0;border-left:110px solid transparent;border-right:110px solid transparent;border-bottom:80px solid rgba(12,120,40,0.95);margin-bottom:-18px;filter:drop-shadow(0 8px 18px rgba(0,0,0,0.5))}
+    .tree .layer.l2{transform:scale(0.9);border-bottom-color:rgba(18,140,60,0.95)}
+    .tree .layer.l3{transform:scale(0.75);border-bottom-color:rgba(28,170,88,0.95)}
+    .tree .trunk{width:40px;height:36px;background:#5a3b21;border-radius:6px;margin-top:6px}
+    .star{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:26px;color:gold;text-shadow:0 4px 12px rgba(255,215,0,0.35)}
+
+    .lights{position:absolute;inset:0;pointer-events:none}
+    .lights span{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(255,127,191,0.9);opacity:0.9}
+
+    .panel .note{font-size:15px;text-align:center;max-width:260px}
+    .panel .from{font-weight:600;margin-top:6px}
+
+    /* Falling snow and sakura petals */
+    .falling{position:absolute;inset:0;pointer-events:none}
+    .snow, .petal{position:absolute;top:-10%;left:0;width:100%;height:120%;overflow:hidden}
+    .snow i, .petal i{
+      position:absolute;display:block;top:-10px;width:12px;height:12px;border-radius:50%;background:transparent;
+      animation-timing-function:linear;animation-iteration-count:infinite;opacity:0.95
+    }
+    /* snow as soft circles */
+    .snow i{background:rgba(255,255,255,0.9);box-shadow:0 6px 18px rgba(0,0,0,0.15)}
+    /* petals are elongated */
+    .petal i{width:14px;height:10px;border-radius:6px;background:var(--sakura);transform:rotate(25deg);filter:drop-shadow(0 6px 10px rgba(0,0,0,0.12))}
+
+    /* generate variety via nth-child */
+    /* Snow animation */
+    .snow i:nth-child(1){left:5%;animation:fall 12s linear infinite;opacity:0.9}
+    .snow i:nth-child(2){left:15%;animation:fall 9s linear infinite;animation-delay:1s;opacity:0.85}
+    .snow i:nth-child(3){left:25%;animation:fall 14s linear infinite;animation-delay:2s}
+    .snow i:nth-child(4){left:37%;animation:fall 8s linear infinite;animation-delay:4s}
+    .snow i:nth-child(5){left:48%;animation:fall 11s linear infinite}
+    .snow i:nth-child(6){left:60%;animation:fall 13s linear infinite;animation-delay:1.5s}
+    .snow i:nth-child(7){left:72%;animation:fall 10s linear infinite;animation-delay:0.7s}
+    .snow i:nth-child(8){left:83%;animation:fall 15s linear infinite;animation-delay:3s}
+    .snow i:nth-child(9){left:92%;animation:fall 7s linear infinite;animation-delay:2.2s}
+
+    @keyframes fall{0%{transform:translateY(-10%) translateX(0) scale(1)}50%{transform:translateY(50vh) translateX(10px) scale(0.95)}100%{transform:translateY(110vh) translateX(-20px) scale(0.9)}}
+
+    /* Petals */
+    .petal i:nth-child(1){left:10%;animation:petal 9s linear infinite}
+    .petal i:nth-child(2){left:22%;animation:petal 13s linear infinite;animation-delay:1s}
+    .petal i:nth-child(3){left:36%;animation:petal 11s linear infinite;animation-delay:0.5s}
+    .petal i:nth-child(4){left:50%;animation:petal 8s linear infinite}
+    .petal i:nth-child(5){left:64%;animation:petal 12s linear infinite;animation-delay:2s}
+    .petal i:nth-child(6){left:76%;animation:petal 10s linear infinite;animation-delay:0.8s}
+    .petal i:nth-child(7){left:88%;animation:petal 14s linear infinite;animation-delay:3s}
+
+    @keyframes petal{0%{transform:translateY(-5%) rotate(10deg) translateX(0)}30%{transform:translateY(35vh) rotate(60deg) translateX(18px)}60%{transform:translateY(70vh) rotate(120deg) translateX(-12px)}100%{transform:translateY(110vh) rotate(180deg) translateX(30px)}}
+
+    /* twinkling lights on tree */
+    .lights span:nth-child(1){left:20%;top:40%;animation:blink 2s infinite}
+    .lights span:nth-child(2){left:40%;top:55%;animation:blink 2.4s infinite}
+    .lights span:nth-child(3){left:60%;top:35%;animation:blink 1.8s infinite}
+    .lights span:nth-child(4){left:30%;top:65%;animation:blink 2.6s infinite}
+    .lights span:nth-child(5){left:70%;top:60%;animation:blink 1.9s infinite}
+    @keyframes blink{0%{transform:scale(0.8);opacity:0.6}50%{transform:scale(1.2);opacity:1}100%{transform:scale(0.8);opacity:0.6}}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .scene{grid-template-columns:1fr;grid-auto-rows:minmax(300px,auto);height:auto;padding:22px}
+      .land{order:2}
+      .panel{order:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" role="main" aria-label="Merry Christmas anime greeting">
+    <div class="land">
+      <div class="card">
+        <div class="avatar">
+          <img src="c:\Users\acer\Pictures\IMG_20251210_170919.jpg" alt="Cute Kitty" style="width: 120px; height: 120px; border-radius: 18px; object-fit: cover;">
+        </div>
+        <div class="meta">
+          <h3>Merry Christmas!</h3>
+          <p>Sending warm, sparkly wishes in anime style — for friends & family.</p>
+        </div>
+      </div>
+ <audio id="bgm" src="c:\Users\acer\OneDrive\Music\Axix_-_Muskan_(mp3.pm).mp3" loop></audio>
+  <button onclick="document.getElementById('bgm').play()" style="background-color: var(--sakura); color: palevioletred;width: 120px; height: 60px; border-radius: 9px; object-fit: cover;">Play Music🎶🎵</button>
+      <div class="greeting" role="region" aria-label="Greeting message">
+        <div class="title">Merry Christmas ✨</div>
+        <div class="body">May your holidays be full of cozy moments, warm smiles and a little magic. To my beloved friends and family — thank you for the laughter and love this year. Love</div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="font-size:12px;opacity:0.85"><code></code> </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-top:12px">
+        <div style="font-size:13px;opacity:0.9">Merry Christmas.</div>
+      </div>
+    </div>
+
+    <aside class="panel" aria-label="Decoration panel">
+      <div class="tree-wrap" aria-hidden="true">
+        <div class="star">★</div>
+        <div class="tree">
+          <div class="layer l1"></div>
+          <div class="layer l2"></div>
+          <div class="layer l3"></div>
+          <div class="trunk"></div>
+        </div>
+        <div class="lights" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="note">Wishing you a magical Christmas night with soft snow, sweet treats, and anime-warm hugs. <div class="from">— From
+         Your lovely Boy(BACHAN)</div></div>
+
+      
+    </aside>
+
+    <!-- falling layers -->
+    <div class="falling" aria-hidden="true">
+      <div class="snow" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="petal" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
